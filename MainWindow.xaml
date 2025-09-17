@@ -1,0 +1,88 @@
+﻿<Window x:Class="BD_taksi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BD_taksi"
+        xmlns:views="clr-namespace:BD_taksi.Views"
+        mc:Ignorable="d"
+        Title="Управление базой данных такси" Height="800" Width="1200">
+    <Grid>
+        <TabControl>
+            <!-- Водители -->
+            <TabItem Header="Водители">
+                <views:DriversView />
+            </TabItem>
+            
+            <!-- Лицензии -->
+            <TabItem Header="Лицензии">
+                <views:LicensesView />
+            </TabItem>
+            
+            <!-- Марки авто -->
+            <TabItem Header="Марки авто">
+                <views:VehicleMakesView />
+            </TabItem>
+            
+            <!-- Модели авто -->
+            <TabItem Header="Модели авто">
+                <views:VehicleModelsView />
+            </TabItem>
+            
+            <!-- Автомобили -->
+            <TabItem Header="Автомобили">
+                <views:VehiclesView />
+            </TabItem>
+            
+            <!-- Клиенты -->
+            <TabItem Header="Клиенты">
+                <views:CustomersView />
+            </TabItem>
+            
+            <!-- Статусы поездок -->
+            <TabItem Header="Статусы поездок">
+                <views:RideStatusesView />
+            </TabItem>
+            
+            <!-- Тарифы -->
+            <TabItem Header="Тарифы">
+                <views:TariffsView />
+            </TabItem>
+            
+            <!-- Акции -->
+            <TabItem Header="Акции">
+                <views:PromotionsView />
+            </TabItem>
+            
+            <!-- Поездки -->
+            <TabItem Header="Поездки">
+                <views:RidesView />
+            </TabItem>
+            
+            <!-- Способы оплаты -->
+            <TabItem Header="Способы оплаты">
+                <views:PaymentMethodsView />
+            </TabItem>
+            
+            <!-- Платежи -->
+            <TabItem Header="Платежи">
+                <views:PaymentsView />
+            </TabItem>
+            
+            <!-- Смены -->
+            <TabItem Header="Смены">
+                <views:ShiftsView />
+            </TabItem>
+            
+            <!-- ТО/Ремонт -->
+            <TabItem Header="ТО/Ремонт">
+                <views:MaintenanceView />
+            </TabItem>
+            
+            <!-- Инциденты -->
+            <TabItem Header="Инциденты">
+                <views:IncidentsView />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

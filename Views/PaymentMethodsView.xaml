@@ -1,0 +1,69 @@
+<UserControl x:Class="BD_taksi.Views.PaymentMethodsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BD_taksi.Views"
+             xmlns:converters="clr-namespace:BD_taksi.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1100">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель поиска и кнопок -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox Width="200" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" 
+                     VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <Button Content="Добавить" Command="{Binding AddNewCommand}" Width="80" Margin="0,0,5,0"/>
+            <Button Content="Редактировать" Command="{Binding EditCommand}" Width="100" Margin="0,0,5,0"/>
+            <Button Content="Удалить" Command="{Binding DeleteCommand}" Width="80" Margin="0,0,5,0"/>
+        </StackPanel>
+
+        <!-- Таблица способов оплаты -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding PaymentMethods}" 
+                  SelectedItem="{Binding SelectedPaymentMethod}"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="300"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Форма редактирования -->
+        <Grid Grid.Row="2" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" 
+              Background="LightGray" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Название -->
+            <StackPanel Grid.Column="0" Margin="10">
+                <TextBlock Text="Название:"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10">
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Width="80" Margin="0,0,5,0"/>
+                <Button Content="Отмена" Command="{Binding CancelCommand}" Width="80"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Индикатор загрузки -->
+        <Grid Grid.Row="1" Background="White" Opacity="0.7" 
+              Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Загрузка..." HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       FontSize="16" FontWeight="Bold"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,166 @@
+<UserControl x:Class="BD_taksi.Views.RidesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BD_taksi.Views"
+             xmlns:converters="clr-namespace:BD_taksi.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1100"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель поиска и кнопок -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox Width="200" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" 
+                     VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <Button Content="Добавить" Command="{Binding AddNewCommand}" Width="80" Margin="0,0,5,0"/>
+            <Button Content="Редактировать" Command="{Binding EditCommand}" Width="100" Margin="0,0,5,0"/>
+            <Button Content="Удалить" Command="{Binding DeleteCommand}" Width="80" Margin="0,0,5,0"/>
+        </StackPanel>
+
+        <!-- Таблица поездок -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Rides}" 
+                  SelectedItem="{Binding SelectedRide}"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Водитель" Binding="{Binding Driver.FullName}" Width="150"/>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding Customer.FullName}" Width="150"/>
+                <DataGridTextColumn Header="Автомобиль" Binding="{Binding Vehicle.PlateNumber}" Width="120"/>
+                <DataGridTextColumn Header="Дата начала" Binding="{Binding StartTime, StringFormat=dd.MM.yyyy HH:mm}" Width="120"/>
+                <DataGridTextColumn Header="Дата окончания" Binding="{Binding EndTime, StringFormat=dd.MM.yyyy HH:mm}" Width="120"/>
+                <DataGridTextColumn Header="Расстояние (км)" Binding="{Binding DistanceKm}" Width="120"/>
+                <DataGridTextColumn Header="Стоимость" Binding="{Binding Cost, StringFormat=C}" Width="100"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status.Name}" Width="100"/>
+                <DataGridTextColumn Header="Тариф" Binding="{Binding Tariff.Name}" Width="100"/>
+                <DataGridTextColumn Header="Акция" Binding="{Binding Promotion.Code}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Форма редактирования -->
+        <Grid Grid.Row="2" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" 
+              Background="LightGray" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Водитель -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+                <TextBlock Text="Водитель:"/>
+                <ComboBox ItemsSource="{Binding Drivers}" 
+                         SelectedValue="{Binding DriverId}"
+                         DisplayMemberPath="FullName"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Клиент -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+                <TextBlock Text="Клиент:"/>
+                <ComboBox ItemsSource="{Binding Customers}" 
+                         SelectedValue="{Binding CustomerId}"
+                         DisplayMemberPath="FullName"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Автомобиль -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+                <TextBlock Text="Автомобиль:"/>
+                <ComboBox ItemsSource="{Binding Vehicles}" 
+                         SelectedValue="{Binding VehicleId}"
+                         DisplayMemberPath="PlateNumber"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Статус -->
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+                <TextBlock Text="Статус:"/>
+                <ComboBox ItemsSource="{Binding RideStatuses}" 
+                         SelectedValue="{Binding StatusId}"
+                         DisplayMemberPath="Name"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Дата начала -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="10">
+                <TextBlock Text="Дата начала:"/>
+                <DatePicker SelectedDate="{Binding StartTime}"/>
+            </StackPanel>
+
+            <!-- Дата окончания -->
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10">
+                <TextBlock Text="Дата окончания:"/>
+                <DatePicker SelectedDate="{Binding EndTime}"/>
+            </StackPanel>
+
+            <!-- Расстояние -->
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="10">
+                <TextBlock Text="Расстояние (км):"/>
+                <TextBox Text="{Binding DistanceKm, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <!-- Стоимость -->
+            <StackPanel Grid.Row="3" Grid.Column="1" Margin="10">
+                <TextBlock Text="Стоимость:"/>
+                <TextBox Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <!-- Тариф -->
+            <StackPanel Grid.Row="4" Grid.Column="0" Margin="10">
+                <TextBlock Text="Тариф:"/>
+                <ComboBox ItemsSource="{Binding Tariffs}" 
+                         SelectedValue="{Binding TariffId}"
+                         DisplayMemberPath="Name"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Акция -->
+            <StackPanel Grid.Row="4" Grid.Column="1" Margin="10">
+                <TextBlock Text="Акция:"/>
+                <ComboBox ItemsSource="{Binding Promotions}" 
+                         SelectedValue="{Binding PromotionId}"
+                         DisplayMemberPath="Code"
+                         SelectedValuePath="Id"/>
+            </StackPanel>
+
+            <!-- Комментарий -->
+            <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="10">
+                <TextBlock Text="Комментарий:"/>
+                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal" Margin="10">
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Width="80" Margin="0,0,5,0"/>
+                <Button Content="Отмена" Command="{Binding CancelCommand}" Width="80"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Индикатор загрузки -->
+        <Grid Grid.Row="1" Background="White" Opacity="0.7" 
+              Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Загрузка..." HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       FontSize="16" FontWeight="Bold"/>
+        </Grid>
+    </Grid>
+</UserControl>
